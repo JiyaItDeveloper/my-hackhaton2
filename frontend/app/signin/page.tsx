@@ -28,8 +28,10 @@ export default function SignInPage() {
       const response = await loginUser({ email, password });
 
       if (response.access_token) {
-        // Store token
-        localStorage.setItem('auth_token', response.access_token);
+        // Store token (client-side only)
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('auth_token', response.access_token);
+        }
         
         // Fetch user data
         const userResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'}/auth/me`, {

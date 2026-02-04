@@ -22,23 +22,25 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     // Check if user is logged in on initial load
     const initializeSession = async () => {
+      if (typeof window === 'undefined') {
+        setLoading(false);
+        return;
+      }
+      
       try {
         const token = localStorage.getItem('auth_token');
         if (token) {
-          // Verify token by fetching user data
           const userData = await getCurrentUser();
           if (userData) {
             setUser(userData);
             setIsAuthenticated(true);
           } else {
-            // Token exists but user data is invalid
             localStorage.removeItem('auth_token');
             setUser(null);
             setIsAuthenticated(false);
           }
         }
       } catch (error) {
-        // If token is invalid or network error, clear it
         console.warn('Session initialization error:', error);
         localStorage.removeItem('auth_token');
         setUser(null);
@@ -52,9 +54,9 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = (userData: User, token: string) => {
-    // Clear any existing auth data first
+    if (typeof window === 'undefined') return;
+    
     localStorage.removeItem('auth_token');
-
     setUser(userData);
     setIsAuthenticated(true);
     localStorage.setItem('auth_token', token);
@@ -62,14 +64,13 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
-      // Call backend logout endpoint to invalidate the token on the server
       await logoutUser();
     } catch (error) {
       console.warn('Backend logout failed, clearing local session anyway:', error);
-      // Even if backend logout fails, still clear local session
     } finally {
-      // Always clear local storage and state regardless of backend response
-      localStorage.removeItem('auth_token');
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('auth_token');
+      }
       setUser(null);
       setIsAuthenticated(false);
     }
