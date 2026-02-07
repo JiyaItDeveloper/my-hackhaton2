@@ -1,0 +1,5 @@
+{
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://jiya-parmar17-hackatonphase2.hf.space/api"
+  }
+}
