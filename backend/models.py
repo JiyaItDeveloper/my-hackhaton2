@@ -31,7 +31,7 @@ class UserRead(UserBase):
 class TodoBase(SQLModel):
     description: str
     completed: bool = Field(default=False)
-    user_id: uuid.UUID = Field(foreign_key="User.id")
+    user_id: uuid.UUID = Field(foreign_key="user.id")
 
 
 class Todo(TodoBase, table=True):
