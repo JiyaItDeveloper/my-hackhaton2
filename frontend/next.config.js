@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'https://jiya-parmar17-hackatonphase2.hf.space/api',
+  publicRuntimeConfig: {
+    apiUrl: 'https://jiya-parmar17-hackatonphase2.hf.space/api',
   },
 };
 
