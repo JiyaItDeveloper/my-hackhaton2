@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, status # type: ignore
+from fastapi.middleware.cors import CORSMiddleware # type: ignore
 from sqlmodel import Session, select # type: ignore
 from typing import List
 from datetime import datetime
@@ -13,12 +14,10 @@ from .schemas.todo_schemas import TodoResponse, TodoCreateRequest, TodoUpdateReq
 
 app = FastAPI(title="Todo Web Application API", version="1.0.0")
 
-# Add CORS middleware
-from fastapi.middleware.cors import CORSMiddleware # type: ignore
-
+# Add CORS middleware BEFORE any routes
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with specific origins
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
